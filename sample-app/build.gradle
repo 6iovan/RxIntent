@@ -16,5 +16,5 @@ android {
 }
 
 dependencies {
-    implementation project(':rxintent')
+    implementation 'com.github.1van:RxIntent:-SNAPSHOT'
 }
