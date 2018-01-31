@@ -1,7 +1,7 @@
 # RxIntent
 [![](https://jitpack.io/v/1van/RxIntent.svg)](https://jitpack.io/#1van/RxIntent)
 
-This library using `startActivityForResult` or start Camera App without callback.  
+This library using `openForResult` or start Camera App without callback.  
 Support Android N(FileUriExposedException).
 
 ## Setup
@@ -28,7 +28,7 @@ dependencies {
 ## Usage
 
 ```java
-RxIntent.startActivity(ExampleActivity.this, ResultActivity.class)
+RxIntent.open(ExampleActivity.this, ResultActivity.class)
         .subscribe(result -> {
             // TODO
          });
@@ -37,7 +37,7 @@ RxIntent.startActivity(ExampleActivity.this, ResultActivity.class)
 ```java
 RxIntent.with(this)
         .intent(new Intent(ExampleActivity.this, ResultActivity.class))
-        .startActivity()
+        .open()
         .subscribe(result -> {
             // TODO
         });

@@ -14,7 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import io.reactivex.Observable;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.internal.functions.ObjectHelper;
-import ivan.rxintent.internal.FileHelper;
+import ivan.rxintent.internal.FileUtils;
+import ivan.rxintent.internal.IntentUtils;
 import ivan.rxintent.internal.ObservableIntent;
 import ivan.rxintent.internal.Request;
 import ivan.rxintent.internal.Result;
@@ -33,28 +34,173 @@ public final class RxIntent {
         return new Builder(activity);
     }
 
-    public static Observable<Result> startActivity(Activity activity, Class<?> cls) {
-        Intent intent = new Intent(activity, cls);
+    public static Observable<Result> open(Activity activity, Intent intent) {
         return new ObservableIntent<>(new Request(activity, intent, REQUEST_CODE.incrementAndGet(), null));
     }
 
-    public static Observable<Result> startActivity(Activity activity, Intent intent) {
-        return new ObservableIntent<>(new Request(activity, intent, REQUEST_CODE.incrementAndGet(), null));
-    }
-
-    public static Observable<Result> startActivity(
+    public static Observable<Result> open(
             Activity activity, Intent intent, int requestCode) {
         return new ObservableIntent<>(new Request(activity, intent, requestCode, null));
     }
 
-    public static Observable<Result> startActivity(
+    public static Observable<Result> open(
             Activity activity, Intent intent, int requestCode, @Nullable Bundle options) {
         return new ObservableIntent<>(new Request(activity, intent, requestCode, options));
     }
 
-    private static <R> Observable<R> startActivityR(
+    private static <R> Observable<R> startActivity(
             Activity activity, Intent intent, int requestCode, @Nullable Bundle options) {
         return new ObservableIntent<>(new Request(activity, intent, requestCode, options));
+    }
+
+    public static Observable<Result> open(final Activity activity, final Class<?> cls) {
+        Intent intent = new Intent(activity, cls);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> open(final Activity activity, final String packageName, final String className) {
+        Intent intent = IntentUtils.getComponentIntent(packageName, className);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> open(final Activity activity, final String packageName, final String className, final boolean isNewTask) {
+        Intent intent = IntentUtils.getComponentIntent(packageName, className, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> open(final Activity activity, final String packageName, final String className, final Bundle bundle) {
+        Intent intent = IntentUtils.getComponentIntent(packageName, className, bundle);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> open(final Activity activity, final String packageName, final String className, final Bundle bundle, final boolean isNewTask) {
+        Intent intent = IntentUtils.getComponentIntent(packageName, className, bundle, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openApp(final Activity activity, final String packageName) {
+        Intent intent = IntentUtils.getLaunchAppIntent(activity, packageName);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openApp(final Activity activity, final String packageName, final boolean isNewTask) {
+        Intent intent = IntentUtils.getLaunchAppIntent(activity, packageName, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openInstall(final Activity activity, final String filePath, final String authority) {
+        Intent intent = IntentUtils.getInstallAppIntent(activity, filePath, authority);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openInstall(final Activity activity, final File file, final String authority) {
+        Intent intent = IntentUtils.getInstallAppIntent(activity, file, authority);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openInstall(final Activity activity, final File file, final String authority, final boolean isNewTask) {
+        Intent intent = IntentUtils.getInstallAppIntent(activity, file, authority, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openUninstall(final Activity activity, final String packageName) {
+        Intent intent = IntentUtils.getUninstallAppIntent(packageName);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openUninstall(final Activity activity, final String packageName, final boolean isNewTask) {
+        Intent intent = IntentUtils.getUninstallAppIntent(packageName, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openAppSetting(final Activity activity, final String packageName) {
+        Intent intent = IntentUtils.getAppDetailsSettingsIntent(packageName);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openAppSetting(final Activity activity, final String packageName, final boolean isNewTask) {
+        Intent intent = IntentUtils.getAppDetailsSettingsIntent(packageName, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareText(final Activity activity, final String text) {
+        Intent intent = IntentUtils.getShareTextIntent(text);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareText(final Activity activity, final String text, final boolean isNewTask) {
+        Intent intent = IntentUtils.getShareTextIntent(text, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareImage(final Activity activity, final String text, final String imagePath) {
+        Intent intent = IntentUtils.getShareImageIntent(text, imagePath);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareImage(final Activity activity, final String text, final String imagePath, final boolean isNewTask) {
+        Intent intent = IntentUtils.getShareImageIntent(text, imagePath, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareImage(final Activity activity, final String text, final File image) {
+        Intent intent = IntentUtils.getShareImageIntent(text, image);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareImage(final Activity activity, final String text, final File image, final boolean isNewTask) {
+        Intent intent = IntentUtils.getShareImageIntent(text, image, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareImage(final Activity activity, final String text, final Uri uri) {
+        Intent intent = IntentUtils.getShareImageIntent(text, uri);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShareImage(final Activity activity, final String text, final Uri uri, final boolean isNewTask) {
+        Intent intent = IntentUtils.getShareImageIntent(text, uri, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShutdown(final Activity activity) {
+        Intent intent = IntentUtils.getShutdownIntent();
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openShutdown(final Activity activity, final boolean isNewTask) {
+        Intent intent = IntentUtils.getShutdownIntent(isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openDial(final Activity activity, final String phoneNumber) {
+        Intent intent = IntentUtils.getDialIntent(phoneNumber);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openDial(final Activity activity, final String phoneNumber, final boolean isNewTask) {
+        Intent intent = IntentUtils.getDialIntent(phoneNumber, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openCall(final Activity activity, final String phoneNumber) {
+        Intent intent = IntentUtils.getCallIntent(phoneNumber);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openCall(final Activity activity, final String phoneNumber, final boolean isNewTask) {
+        Intent intent = IntentUtils.getCallIntent(phoneNumber, isNewTask);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openSendSms(final Activity activity, final String phoneNumber, final String content) {
+        Intent intent = IntentUtils.getSendSmsIntent(phoneNumber, content);
+        return open(activity, intent);
+    }
+
+    public static Observable<Result> openSendSms(final Activity activity, final String phoneNumber, final String content, final boolean isNewTask) {
+        Intent intent = IntentUtils.getSendSmsIntent(phoneNumber, content, isNewTask);
+        return open(activity, intent);
     }
 
 
@@ -83,10 +229,10 @@ public final class RxIntent {
             return this;
         }
 
-        public Observable<Result> startActivity() {
+        public Observable<Result> open() {
             ObjectHelper.requireNonNull(activity, "activity is null");
             ObjectHelper.requireNonNull(intent, "intent is null");
-            return RxIntent.startActivity(activity, intent, REQUEST_CODE.incrementAndGet(), options);
+            return RxIntent.open(activity, intent, REQUEST_CODE.incrementAndGet(), options);
         }
 
         public Video video() {
@@ -106,7 +252,7 @@ public final class RxIntent {
         private Camera(Activity activity) {
             this.activity = activity;
             filePath = activity.getExternalCacheDir().getAbsolutePath() + "/DCIM";
-            FileHelper.mkdirs(filePath);
+            FileUtils.mkdirs(filePath);
         }
 
         abstract Intent getIntent();
@@ -115,11 +261,11 @@ public final class RxIntent {
 
         public abstract Observable<File> file();
 
-        <T> Observable<T> startCamera(int requestCode) {
+        <T> Observable<T> openCamera(int requestCode) {
             Intent intent = getIntent();
             ObjectHelper.requireNonNull(activity, "activity is null");
             ObjectHelper.requireNonNull(intent, "intent is null");
-            return RxIntent.startActivityR(activity, intent, requestCode, null);
+            return RxIntent.startActivity(activity, intent, requestCode, null);
         }
     }
 
@@ -144,7 +290,7 @@ public final class RxIntent {
 
         @Override
         Intent getIntent() {
-            FILE = new File(filePath, "VID_" + FileHelper.generateFileName() + ".mp4");
+            FILE = new File(filePath, "VID_" + FileUtils.generateFileName() + ".mp4");
             Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, durationLimit);
             intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, videoQuality);
@@ -161,12 +307,12 @@ public final class RxIntent {
 
         @Override
         public Observable<Uri> uri() {
-            return startCamera(RxIntent.REQUEST_CODE_CAMERA_VIDEO_URI);
+            return openCamera(RxIntent.REQUEST_CODE_CAMERA_VIDEO_URI);
         }
 
         @Override
         public Observable<File> file() {
-            return startCamera(RxIntent.REQUEST_CODE_CAMERA_VIDEO_FILE);
+            return openCamera(RxIntent.REQUEST_CODE_CAMERA_VIDEO_FILE);
         }
     }
 
@@ -178,7 +324,7 @@ public final class RxIntent {
 
         @Override
         Intent getIntent() {
-            FILE = new File(filePath, "IMG_" + FileHelper.generateFileName() + ".jpg");
+            FILE = new File(filePath, "IMG_" + FileUtils.generateFileName() + ".jpg");
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 URI = FileProvider.getUriForFile(activity, "ivan.rxintent.provider", FILE);
@@ -193,12 +339,12 @@ public final class RxIntent {
 
         @Override
         public Observable<Uri> uri() {
-            return startCamera(RxIntent.REQUEST_CODE_CAMERA_IMAGE_URI);
+            return openCamera(RxIntent.REQUEST_CODE_CAMERA_IMAGE_URI);
         }
 
         @Override
         public Observable<File> file() {
-            return startCamera(RxIntent.REQUEST_CODE_CAMERA_IMAGE_FILE);
+            return openCamera(RxIntent.REQUEST_CODE_CAMERA_IMAGE_FILE);
         }
     }
 

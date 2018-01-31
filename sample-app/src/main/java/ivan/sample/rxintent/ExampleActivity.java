@@ -26,7 +26,7 @@ public class ExampleActivity extends AppCompatActivity {
     }
 
     public void example1(View view) {
-        RxIntent.startActivity(this, ResultActivity.class)
+        RxIntent.open(this, ResultActivity.class)
                 .subscribe(result -> {
                     Intent data = result.getData();
                     String edt = data.getStringExtra("edt");
@@ -37,7 +37,7 @@ public class ExampleActivity extends AppCompatActivity {
     public void example2(View view) {
         RxIntent.with(this)
                 .intent(new Intent(this, ResultActivity.class))
-                .startActivity()
+                .open()
                 .subscribe(result -> {
                     Intent data = result.getData();
                     String edt = data.getStringExtra("edt");
